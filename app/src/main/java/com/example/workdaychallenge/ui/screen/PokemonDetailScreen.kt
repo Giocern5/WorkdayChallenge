@@ -37,6 +37,7 @@ fun PokemonDetailScreen(navController: NavHostController, viewModel: PokemonView
     val lifecycleOwner = LocalLifecycleOwner.current
     val backDispatcher = LocalOnBackPressedDispatcherOwner.current
 
+    // Screen set up
     Column( modifier = Modifier.fillMaxSize()) {
         when{
             pokemonDetails.value != null -> {
@@ -74,7 +75,7 @@ fun showError(){
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = "Oops, looks like something went wrong!",
+            text = stringResource(id = R.string.errorMessage1),
             color= Color.White,
             textAlign = TextAlign.Center,
             modifier = Modifier.align(Alignment.Center)
@@ -84,13 +85,19 @@ fun showError(){
 
 @Composable
 fun PokemonImage(name: String?, url: String?) {
-    AsyncImage(
-        model = url,
-        contentDescription = "Image for $name",
+
+    Row(horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color.Gray),
-    )
+            .background(Color.Gray)
+            .height(270.dp)) {
+        AsyncImage(
+            model = url,
+            contentDescription = "Image for $name",
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
 }
 
 @Composable
@@ -103,9 +110,12 @@ fun PokemonAboutSection(pokemonDetails: State<PokemonDetails?>) {
                 Text(text = "${stringResource(id = R.string.about)}   ${details.name}",
                     color = Color.White, fontSize = 40.sp, fontWeight = FontWeight.Bold)
                 DividerLine()
-                DescriptionCell(description = stringResource(id = R.string.id), value = details.id)
-                DescriptionCell(description = stringResource(id = R.string.height), value = details.height)
-                DescriptionCell(description = stringResource(id = R.string.weight), value = details.weight)
+                DescriptionCell(description = stringResource(id = R.string.id),
+                    value = details.id)
+                DescriptionCell(description = stringResource(id = R.string.height),
+                    value = stringResource(R.string.heightValue ,details.height))
+                DescriptionCell(description = stringResource(id = R.string.weight),
+                    value =  stringResource(R.string.weightValue ,details.weight))
                 TypesCell( types = details.types)
                 details.stats.let { stats->
                     stats.forEach{ stat->

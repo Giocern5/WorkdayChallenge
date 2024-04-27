@@ -15,9 +15,7 @@ import  com.example.workdaychallenge.data.model.Result
 
 @HiltViewModel
 class PokemonViewModel
-@Inject constructor(
-    private val repository: PokemonRepository,
-    ) : ViewModel() {
+@Inject constructor(private val repository: PokemonRepository) : ViewModel() {
 
     companion object {
         const val TAG = "PostFeedViewModel"

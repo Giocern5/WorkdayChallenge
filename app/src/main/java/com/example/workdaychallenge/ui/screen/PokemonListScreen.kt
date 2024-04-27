@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,6 +35,11 @@ import com.example.workdaychallenge.ui.viewmodel.PokemonViewModel
 @Composable
 fun PokemonListScreen(navController: NavHostController, viewModel: PokemonViewModel) {
 
+    //Look into why there is a delay in loading details screen
+    // unit test still :(
+    // look into passing state or data diretcly?
+    // add units to detail stats
+
     val pokemonList = viewModel.pokemonList.observeAsState(initial = emptyList())
     val pokemonDetails = viewModel.pokemonDetails.observeAsState(initial = null)
     val isLoading = viewModel.isLoading.observeAsState(initial = false)
@@ -41,25 +47,26 @@ fun PokemonListScreen(navController: NavHostController, viewModel: PokemonViewMo
     val context = LocalContext.current
 
     // Only need this to run once
-    LaunchedEffect(Unit){
+    LaunchedEffect(Unit) {
             viewModel.setPokemonList()
     }
 
-    //navigating to details page on either search input or item click
+    // Navigating to details page on either search input or item click
     LaunchedEffect(pokemonDetails.value) {
         if (pokemonDetails.value != null) {
             navController.navigate(Screen.PokemonDetail.route)
         }
     }
 
-    //Showing error message
-    LaunchedEffect(key1 = errorMessage.value){
+    // Showing error message
+    LaunchedEffect(key1 = errorMessage.value) {
         if(errorMessage.value.isNotEmpty()) {
             Toast.makeText(context,errorMessage.value, Toast.LENGTH_SHORT).show()
             viewModel.clearErrorMessage()
         }
     }
 
+    // Screen set up
     Column(modifier = Modifier.fillMaxSize()) {
         searchBar(viewModel)
         PokemonList(pokemonList, viewModel, isLoading)
@@ -79,8 +86,8 @@ fun searchBar(viewModel: PokemonViewModel) {
         OutlinedTextField(value = searchBarText, onValueChange = { text ->
             searchBarText = text
         }, modifier = Modifier
-            .height(45.dp) // Set the height of the TextField
-            .weight(1f) // Occupy all available space
+            .height(45.dp)
+            .weight(1f)
             .background(Color.Gray))
         Spacer(modifier = Modifier.width(8.dp))
         Button(onClick = {
@@ -115,7 +122,7 @@ fun PokemonList(pokemonList: State<List<PokemonQuery>>,
                 Image(
                     painter = painterResource(id = R.mipmap.pokemon_ball_foreground),
                     contentDescription = pokemonList.value[index].name,
-                    modifier = Modifier.size(200.dp)
+                    modifier = Modifier.size(170.dp)
                 )
                 Text(
                     text = pokemonList.value[index].name,
@@ -123,7 +130,8 @@ fun PokemonList(pokemonList: State<List<PokemonQuery>>,
                     fontSize = 20.sp,
                     color = Color.White,
                     maxLines = 2,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.Bold
                 )
             }
             // Load more items when reaching the end of the list

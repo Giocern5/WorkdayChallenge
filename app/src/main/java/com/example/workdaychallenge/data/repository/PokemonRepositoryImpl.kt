@@ -1,6 +1,5 @@
 package com.example.workdaychallenge.data.repository
 
-import android.util.Log
 import com.example.workdaychallenge.data.model.PokemonDetails
 import com.example.workdaychallenge.data.model.PokemonQuery
 import com.example.workdaychallenge.network.PokemonService

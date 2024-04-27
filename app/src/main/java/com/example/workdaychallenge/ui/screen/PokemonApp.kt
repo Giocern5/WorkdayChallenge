@@ -13,11 +13,11 @@ import com.example.workdaychallenge.ui.viewmodel.PokemonViewModel
 @Composable
 fun PokemonApp() {
     val navController = rememberNavController()
-    //Used for shared viewmodel
+    // Used for shared viewmodel
     val viewModel =  hiltViewModel<PokemonViewModel>()
 
     NavHost(navController = navController, startDestination = "pokemonListScreen",
-        modifier = Modifier.background(Color.DarkGray) // Set the background color for flashing bug
+        modifier = Modifier.background(Color.DarkGray)
     ) {
         composable("pokemonListScreen") {
             PokemonListScreen(navController, viewModel)
