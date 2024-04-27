@@ -1,6 +1,8 @@
 package com.example.workdaychallenge.di
 
 import android.content.Context
+import com.example.workdaychallenge.data.repository.PokemonRepository
+import com.example.workdaychallenge.data.repository.PokemonRepositoryImpl
 import com.example.workdaychallenge.network.PokemonService
 import dagger.Module
 import dagger.Provides
@@ -35,8 +37,8 @@ object NetworkModule {
     }
 
 
-//    @Provides
-//    fun providePokemonRepository(pokemonApi: PokemonApi): PokemonRepository {
-//        return PokemonRepositoryImpl(pokemonApi)
-//    }
+    @Provides
+    fun providePokemonRepository(service: PokemonService): PokemonRepository {
+        return PokemonRepositoryImpl(service)
+    }
 }

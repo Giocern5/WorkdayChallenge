@@ -7,19 +7,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.workdaychallenge.data.model.PokemonDetails
 import com.example.workdaychallenge.data.model.PokemonQuery
-import com.example.workdaychallenge.network.PokemonService
+import com.example.workdaychallenge.data.repository.PokemonRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.IOException
 import javax.inject.Inject
-private const val LIMIT = 10
+import  com.example.workdaychallenge.data.model.Result
 
 @HiltViewModel
 class PokemonViewModel
 @Inject constructor(
-    private val service: PokemonService
-) : ViewModel() {
+    private val repository: PokemonRepository,
+    ) : ViewModel() {
+
     companion object {
         const val TAG = "PostFeedViewModel"
     }
@@ -32,55 +31,39 @@ class PokemonViewModel
     val isLoading: LiveData<Boolean> get() = _isLoading
     private val _errorMessage = MutableLiveData<String>()
     val errorMessage: LiveData<String> get() = _errorMessage
-    private var offset = 0
 
-    fun setPokemonList() {
+     fun setPokemonList() {
         _isLoading.value = true
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                val res = service.getPokemonList( LIMIT, offset)
-                if(res.isSuccessful) {
-                    val newData = res.body()?.results
-                    newData?.let {
-                        val currentData = _pokemonList.value?.toMutableList() ?: mutableListOf()
-                        currentData.addAll(it)
-                        _pokemonList.postValue(currentData)
-                        offset += LIMIT
-                    }
-                } else {
-                    _errorMessage.postValue("No results found!")
-                    Log.e(TAG, res.errorBody().toString())
+        viewModelScope.launch {
+            when (val result = repository.getPokemonList()) {
+                is Result.Success -> {
+                    val currentData = _pokemonList.value.orEmpty().toMutableList()
+                    currentData.addAll(result.data)
+                    _pokemonList.value = currentData
+                    _isLoading.value = false
                 }
-            } catch (err: IOException) {
-                _errorMessage.postValue("Network error occurred")
-                Log.e(TAG, err.message.toString())
-            } finally {
-                _isLoading.postValue( false)
+                is Result.Error -> {
+                    Log.e(TAG, result.exception.message.toString())
+                    _errorMessage.value = result.exception.message.toString()
+                    _isLoading.value = false
+                }  is Result.Loading -> {}
             }
         }
     }
 
     fun setPokemonDetails(name: String) {
-        // remove a clear details here
         _isLoading.value = true
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                val res = service.getPokemonDetails(name.lowercase())
-                if(res.isSuccessful) {
-                    _pokemonDetails.postValue(res.body())
-                } else {
-                    _errorMessage.postValue( "No results found!")
-                    Log.e(TAG, res.errorBody().toString())
-                    // maybe needed? test again later
-                // _pokemonDetails.postValue(null)
+        viewModelScope.launch {
+            when (val result = repository.getPokemonDetails(name)) {
+                is Result.Success -> {
+                    _pokemonDetails.value = result.data
+                    _isLoading.value = false
                 }
-
-            } catch (err: IOException) {
-                // customer friendly error message
-                _errorMessage.postValue("Network error occurred")
-                Log.e(TAG, err.message.toString())
-            } finally {
-                _isLoading.postValue( false)
+                is Result.Error -> {
+                    Log.e(TAG, result.exception.message.toString())
+                    _errorMessage.value = result.exception.message.toString()
+                    _isLoading.value = false
+                } is Result.Loading -> {}
             }
         }
     }
@@ -90,6 +73,6 @@ class PokemonViewModel
     }
 
     fun clearErrorMessage() {
-            _errorMessage.postValue("")
+        _errorMessage.postValue("")
     }
 }
