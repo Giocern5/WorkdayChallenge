@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.workdaychallenge.data.model.PokemonDetails
 import com.example.workdaychallenge.data.model.PokemonQuery
-import com.example.workdaychallenge.network.PokemonApi
+import com.example.workdaychallenge.network.PokemonService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,7 +18,7 @@ private const val LIMIT = 10
 @HiltViewModel
 class PokemonViewModel
 @Inject constructor(
-    private val service: PokemonApi
+    private val service: PokemonService
 ) : ViewModel() {
     companion object {
         const val TAG = "PostFeedViewModel"

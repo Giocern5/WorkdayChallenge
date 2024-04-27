@@ -40,7 +40,7 @@ fun PokemonListScreen(navController: NavHostController, viewModel: PokemonViewMo
     val errorMessage = viewModel.errorMessage.observeAsState(initial = "")
     val context = LocalContext.current
 
-    // Only need this to 1 once
+    // Only need this to run once
     LaunchedEffect(Unit){
             viewModel.setPokemonList()
     }

@@ -1,8 +1,7 @@
 package com.example.workdaychallenge.di
 
 import android.content.Context
-import com.example.workdaychallenge.network.PokemonApi
-import com.example.workdaychallenge.data.repository.PokemonRepository
+import com.example.workdaychallenge.network.PokemonService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,7 +11,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
-// MOVw TO STRING FILE ?
 private  const val BASE_URL = "https://pokeapi.co/api/v2/"
 
 @Module
@@ -26,14 +24,14 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit() : PokemonApi {
+    fun provideRetrofit() : PokemonService {
         val instance = Retrofit
             .Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
-        return instance.create(PokemonApi::class.java)
+        return instance.create(PokemonService::class.java)
     }
 
 

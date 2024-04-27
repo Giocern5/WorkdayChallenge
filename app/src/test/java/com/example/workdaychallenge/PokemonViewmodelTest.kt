@@ -2,7 +2,7 @@ package com.example.workdaychallenge
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.workdaychallenge.data.model.*
-import com.example.workdaychallenge.network.PokemonApi
+import com.example.workdaychallenge.network.PokemonService
 import com.example.workdaychallenge.ui.viewmodel.PokemonViewModel
 import com.nhaarman.mockitokotlin2.mock
 import kotlinx.coroutines.*
@@ -18,7 +18,7 @@ class PokemonViewModelTest {
     val rule = InstantTaskExecutorRule()
 
     private lateinit var viewModel: PokemonViewModel
-    private lateinit var service: PokemonApi
+    private lateinit var service: PokemonService
     private val pokemonName = "bulbasaur"
     private val sprites = Sprites(Other(Home("")))
 
