@@ -9,8 +9,12 @@ Project demo of getting a list of Pokemon and searching for a specific Pokemon
 <h1>Project Overview:</h1>
 
 Utilized MVVM architecture entirely in Jetpack Compose.
+
 Implemented a shared ViewModel between the two screens.
+
 Incorporated Hilt for Dependency Injection.
+
+Added custom pagination for infinite scrolling
 
 <h2>API Call Optimization:</h2>
 
