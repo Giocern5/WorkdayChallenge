@@ -2,8 +2,8 @@
 
 Project demo of getting a list of Pokemon and searching for a specific Pokemon
 <p float="left">
-  <img src="https://github.com/Giocern5/WorkdayChallenge/assets/38301046/c6da0875-7e0c-4d0d-a905-ca533222ee08" alt="Screen Recording 2024-04-26 at 7 44 43 PM 4" width="240" height="450" />
-  <img src="https://github.com/Giocern5/WorkdayChallenge/assets/38301046/25a4ff76-ff36-4454-b98b-98f3a597b0a7" alt="Screen Recording 2024-04-26 at 7 44 43 PM 2" width="240" height="450" />
+  <img src="https://github.com/Giocern5/WorkdayChallenge/assets/38301046/9205329d-be00-491a-a8d1-f23382525d95" alt="Screen Recording 2024-04-26 at 7 44 43 PM 4" width="240" height="450" />
+  <img src="https://github.com/Giocern5/WorkdayChallenge/assets/38301046/ecb306e8-2a88-4c4f-947a-d010a44c3ad2" alt="Screen Recording 2024-04-26 at 7 44 43 PM 2" width="240" height="450" />
 </p>
 
 <h1>Project Overview:</h1>
@@ -34,4 +34,4 @@ PokemonDetailScreen: Screen displaying detailed information about a selected Pok
 <li>Coroutines</li>
 <li>Jetpack Compose</li>
 <li>Jetpack Navigation</li>
-<li>Coil for image loading</li>
+<li>Glide for image loading</li>
