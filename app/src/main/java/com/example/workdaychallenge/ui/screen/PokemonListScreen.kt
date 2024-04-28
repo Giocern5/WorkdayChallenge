@@ -1,16 +1,13 @@
 package com.example.workdaychallenge.ui.screen
 
 
-import android.util.Log
 import android.widget.Toast
-
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.OutlinedTextField
@@ -30,21 +27,20 @@ import androidx.navigation.NavHostController
 import com.example.workdaychallenge.R
 import com.example.workdaychallenge.data.model.PokemonQuery
 import com.example.workdaychallenge.ui.CircularProgressBar
+import com.example.workdaychallenge.ui.ErrorMessage
 import com.example.workdaychallenge.ui.viewmodel.PokemonViewModel
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
 fun PokemonListScreen(navController: NavHostController, viewModel: PokemonViewModel) {
-
-    //Look into why there is a delay in loading details screen
-    // unit test still :(
-    // look into passing state or data diretcly?
-    // add units to detail stats
 
     val pokemonList = viewModel.pokemonList.observeAsState(initial = emptyList())
     val pokemonDetails = viewModel.pokemonDetails.observeAsState(initial = null)
     val isLoading = viewModel.isLoading.observeAsState(initial = false)
     val errorMessage = viewModel.errorMessage.observeAsState(initial = "")
     val context = LocalContext.current
+    val refreshState = rememberSwipeRefreshState(isRefreshing = false)
 
     // Only need this to run once
     LaunchedEffect(Unit) {
@@ -66,26 +62,43 @@ fun PokemonListScreen(navController: NavHostController, viewModel: PokemonViewMo
         }
     }
 
-    // Screen set up
-    Column(modifier = Modifier.fillMaxSize()) {
-        searchBar(viewModel)
-        PokemonList(pokemonList, viewModel, isLoading)
-        CircularProgressBar(isLoading = isLoading.value)
+    SwipeRefresh(
+        state = refreshState,
+        onRefresh = { viewModel.setPokemonList() },
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        // Screen set up
+        Column(modifier = Modifier.fillMaxSize()) {
+            SearchBar(viewModel)
+            when {
+                isLoading.value && pokemonList.value.isEmpty() -> {
+                    CircularProgressBar(isLoading = isLoading.value)
+                }
+                pokemonList.value.isNotEmpty() -> {
+                    PokemonList(pokemonList, viewModel, isLoading)
+                }
+                else -> {
+                    ErrorMessage()
+                }
+            }
 
+        }
     }
 }
 
 @Composable
-fun searchBar(viewModel: PokemonViewModel) {
+fun SearchBar(viewModel: PokemonViewModel) {
     var searchBarText by remember { mutableStateOf("") }
 
     Row(horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.padding(8.dp)) {
 
-        OutlinedTextField(value = searchBarText, onValueChange = { text ->
-            searchBarText = text
-        }, modifier = Modifier
+        OutlinedTextField(value = searchBarText,
+            onValueChange = { text -> searchBarText = text },
+            modifier = Modifier
             .height(45.dp)
             .weight(1f)
             .background(Color.Gray))
@@ -107,8 +120,7 @@ fun PokemonList(pokemonList: State<List<PokemonQuery>>,
                 viewModel: PokemonViewModel, isLoading:State<Boolean>) {
 
     LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-    ) {
+        columns = GridCells.Fixed(2)) {
         items(pokemonList.value.size) { index ->
             Column(
                 modifier = Modifier
@@ -136,8 +148,7 @@ fun PokemonList(pokemonList: State<List<PokemonQuery>>,
             }
             // Load more items when reaching the end of the list
             if (index == pokemonList.value.size - 1 && !isLoading.value) {
-                Log.e("Current count", pokemonList.value.size.toString())
-                viewModel.setPokemonList() // Load more items
+                viewModel.setPokemonList()
             }
         }
     }

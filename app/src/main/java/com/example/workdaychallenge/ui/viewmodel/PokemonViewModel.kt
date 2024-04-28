@@ -20,7 +20,7 @@ class PokemonViewModel
     companion object {
         const val TAG = "PostFeedViewModel"
     }
-    // TODO: Use a sealed class to hold this
+
     private val _pokemonList = MutableLiveData<List<PokemonQuery>> ()
     val pokemonList: LiveData<List<PokemonQuery>> get() = _pokemonList
     private val _pokemonDetails = MutableLiveData<PokemonDetails?> ()

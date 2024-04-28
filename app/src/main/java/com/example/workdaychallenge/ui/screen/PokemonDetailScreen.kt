@@ -28,6 +28,9 @@ import androidx.navigation.NavHostController
 import com.example.workdaychallenge.data.model.Types
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.font.FontWeight
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
+import com.example.workdaychallenge.ui.ErrorMessage
 import com.example.workdaychallenge.ui.viewmodel.PokemonViewModel
 
 @Composable
@@ -46,10 +49,11 @@ fun PokemonDetailScreen(navController: NavHostController, viewModel: PokemonView
                 PokemonAboutSection(pokemonDetails)
             }
             else -> {
-                showError()
+                ErrorMessage()
             }
         }
 
+        // Used to clear current item due to how we navigate to this screen
         DisposableEffect(key1 = backDispatcher) {
             val callback = object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
@@ -66,37 +70,18 @@ fun PokemonDetailScreen(navController: NavHostController, viewModel: PokemonView
 
 }
 
-@Composable
-fun showError(){
-    Box(
-        modifier = Modifier
-            .padding(horizontal = 16.dp)
-            .fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = stringResource(id = R.string.errorMessage1),
-            color= Color.White,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.align(Alignment.Center)
-        )
-    }
-}
-
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun PokemonImage(name: String?, url: String?) {
-
     Row(horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
             .background(Color.Gray)
             .height(270.dp)) {
-        AsyncImage(
-            model = url,
+        GlideImage(model =url ,
             contentDescription = "Image for $name",
-            modifier = Modifier.fillMaxWidth()
-        )
+            modifier = Modifier.fillMaxSize())
     }
 }
 
@@ -107,7 +92,7 @@ fun PokemonAboutSection(pokemonDetails: State<PokemonDetails?>) {
         .padding(horizontal = 16.dp)
         .verticalScroll(rememberScrollState())) {
             pokemonDetails.value?.let { details ->
-                Text(text = "${stringResource(id = R.string.about)}   ${details.name}",
+                Text(text = details.name,
                     color = Color.White, fontSize = 40.sp, fontWeight = FontWeight.Bold)
                 DividerLine()
                 DescriptionCell(description = stringResource(id = R.string.id),

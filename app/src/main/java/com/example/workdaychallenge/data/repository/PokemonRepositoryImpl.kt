@@ -24,7 +24,7 @@ class PokemonRepositoryImpl @Inject constructor(private val service: PokemonServ
                     Result.Error(Exception("Empty response"))
                 }
             } else {
-                Result.Error(Exception(response.message()))
+                Result.Error(Exception("Enter Valid Pokemon!"))
             }
         } catch (e: IOException) {
             Result.Error(e)
@@ -42,7 +42,7 @@ class PokemonRepositoryImpl @Inject constructor(private val service: PokemonServ
                     Result.Error(Exception("Empty response"))
                 }
             } else {
-                Result.Error(Exception("Empty response"))
+                Result.Error(Exception("Enter Valid Pokemon!"))
             }
         } catch (e: IOException) {
             Result.Error(e)
