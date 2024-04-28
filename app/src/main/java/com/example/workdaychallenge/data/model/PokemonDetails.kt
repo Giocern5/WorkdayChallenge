@@ -4,7 +4,12 @@ data class Home(val front_default: String)
 
 data class Other(val home: Home)
 
-data class Sprites(val other: Other)
+data class Sprites(
+    val other: Other,
+    val front_default: String,
+    val back_default: String,
+    val front_shiny: String,
+    val back_shiny: String)
 
 data class Type(val name: String)
 

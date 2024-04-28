@@ -30,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.font.FontWeight
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.example.workdaychallenge.data.model.Sprites
 import com.example.workdaychallenge.ui.ErrorMessage
 import com.example.workdaychallenge.ui.viewmodel.PokemonViewModel
 
@@ -106,8 +107,34 @@ fun PokemonAboutSection(pokemonDetails: State<PokemonDetails?>) {
                     stats.forEach{ stat->
                         DescriptionCell(description = stat.stat.name, value =  stat.base_stat) }
                 }
+                Text(text = stringResource(id = R.string.sprites),
+                    color = Color.White, fontSize = 40.sp, fontWeight = FontWeight.Bold)
+                DividerLine()
+                SpritesCell(details.name,details.sprites)
             }
         }
+}
+
+@OptIn(ExperimentalGlideComposeApi::class)
+@Composable
+fun SpritesCell(name: String, sprites: Sprites) {
+    Row(modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceEvenly
+    ) {
+
+        GlideImage(model = sprites.front_default ,
+            contentDescription = "Image for $name",
+            modifier = Modifier.size(90.dp))
+        GlideImage(model = sprites.back_default ,
+            contentDescription = "Image for $name",
+            modifier = Modifier.size(90.dp))
+        GlideImage(model = sprites.front_shiny ,
+            contentDescription = "Image for $name",
+            modifier = Modifier.size(90.dp))
+        GlideImage(model = sprites.back_shiny ,
+            contentDescription = "Image for $name",
+            modifier = Modifier.size(90.dp))
+    }
 }
 
 @Composable
@@ -120,6 +147,7 @@ fun DividerLine() {
             .paddingFromBaseline(bottom = 8.dp)
     )
 }
+
 @Composable
 fun DescriptionCell(description: String, value: String) {
     Row(modifier = Modifier.fillMaxWidth(),
