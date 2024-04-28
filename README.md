@@ -1,6 +1,9 @@
 # WorkdayChallenge
+<h1>How to run: </h1>
+Clone the app and test on device of chose. I used Pixel 3A and Pixel 6 Pro for testing. Click play button inorder to install and run the app.
 
-Project demo of getting a list of Pokemon and searching for a specific Pokemon
+<h1>Usage: </h1>
+Users can scroll through a list of pokemon and click on an item to navigate to a details pages. A user can also search for a valid Pokemon and see more details.
 <p float="left">
   <img src="https://github.com/Giocern5/WorkdayChallenge/assets/38301046/9205329d-be00-491a-a8d1-f23382525d95" alt="Screen Recording 2024-04-26 at 7 44 43 PM 4" width="240" height="450" />
   <img src="https://github.com/Giocern5/WorkdayChallenge/assets/38301046/ecb306e8-2a88-4c4f-947a-d010a44c3ad2" alt="Screen Recording 2024-04-26 at 7 44 43 PM 2" width="240" height="450" />
@@ -16,6 +19,8 @@ Incorporated Hilt for Dependency Injection.
 
 Added custom pagination for infinite scrolling
 
+Used Navigation to help with app navigation of screens.
+
 <h2>API Call Optimization:</h2>
 
 Avoided chaining API calls to retrieve detailed Pokémon information to reduce network load.
@@ -30,8 +35,9 @@ PokemonDetailScreen: Screen displaying detailed information about a selected Pok
 
 
 <h1>Built Using</h1>
-<li>Retrofit</li>
-<li>Coroutines</li>
-<li>Jetpack Compose</li>
-<li>Jetpack Navigation</li>
-<li>Glide for image loading</li>
+<li>Retrofit: Used to easily and safely make HTTP requests to RESTFUL Apis </li>
+<li>Hilt: Used for dependency injection to help moduralize the code for testability and readability</li>
+<li>Coroutines: Useed for its ansynchronous porgamming</li>
+<li>Jetpack Compose: Used per project requirements</li>
+<li>Jetpack Navigation: Used to simplify navigation</li>
+<li>Glide for image loading: Helps with image caching and loading</li>
