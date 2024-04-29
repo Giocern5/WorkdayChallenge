@@ -25,6 +25,8 @@ Used Navigation to help with app navigation of screens.
 
 Avoided chaining API calls to retrieve detailed Pokémon information to reduce network load.
 
+API had limitations on how to get more details after detailed information was given. Multiple other api calls would be needed. So chose to implement 2 individual network request and use available information to increase user experience. API would need to be refactored to include neccessary data for list screen and details screen.
+
 Implemented a placeholder image. Clicking on an item or searching for a Pokémon triggers a separate API call.
 
 
